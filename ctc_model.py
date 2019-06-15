@@ -157,6 +157,7 @@ def ctc_crnn_custom(params):
     x1 = tf.keras.layers.BatchNormalization()(x1)
     x1 = tf.keras.layers.LeakyReLU()(x1)
     x1 = tf.keras.layers.SeparableConv2D(64, (3, 3), padding="same", use_bias = False)(x1)
+    x2 = tf.keras.layers.SeparableConv2D(64, (1, 1), padding="same", use_bias = False)(x)
     x2 = tf.keras.layers.LeakyReLU()(x2)    
     x = tf.keras.layers.Add()([x1, x2])
     width_reduction = width_reduction * 2
