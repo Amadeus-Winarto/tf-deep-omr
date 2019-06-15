@@ -20,7 +20,7 @@ def default_model_params(img_height, vocabulary_size):
     params = dict()
     params['img_height'] = img_height
     params['img_width'] = None
-    params['batch_size'] = 16
+    params['batch_size'] = 8
     params['img_channels'] = 1
     params['conv_blocks'] = 4
     params['conv_filter_n'] = [32, 64, 128, 256]
