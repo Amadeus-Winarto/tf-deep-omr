@@ -45,7 +45,7 @@ train_opt = tf.train.AdamOptimizer().minimize(loss)
 saver = tf.train.Saver(max_to_keep=None)
 sess.run(tf.global_variables_initializer())
 
-step_size = primus.getTrainSize // params['batch_size']
+step_size = primus.getTrainSize() // params['batch_size']
 
 # Training loop
 for epoch in range(max_epochs):
@@ -67,7 +67,7 @@ for epoch in range(max_epochs):
         print ('Loss value at epoch ' + str(epoch + 1) + ':' + str(mean(loss_value)))
         print ('Validating...')
 
-        val_step = primus.getValidationSize // params['batch_size']
+        val_step = primus.getValidationSize() // params['batch_size']
         val_ed = 0
         val_len = 0
         val_count = 0
