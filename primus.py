@@ -110,7 +110,7 @@ class CTC_PriMuS:
             labels = []
     
             # Read files
-        count = 0
+            count = 0
             for sample_filepath in self.validation_list:
                 sample_fullpath = self.corpus_dirpath + '/' + sample_filepath + '/' + sample_filepath
     
