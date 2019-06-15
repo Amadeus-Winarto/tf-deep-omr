@@ -110,6 +110,7 @@ class CTC_PriMuS:
             labels = []
     
             # Read files
+        count = 0
             for sample_filepath in self.validation_list:
                 sample_fullpath = self.corpus_dirpath + '/' + sample_filepath + '/' + sample_filepath
     
@@ -118,6 +119,8 @@ class CTC_PriMuS:
                 height = params['img_height']
                 sample_img = ctc_utils.resize(sample_img,height)
                 images.append(ctc_utils.normalize(sample_img))
+                print("Error Pass ", count)
+                count +=1
     
                 # GROUND TRUTH
                 if self.semantic:
