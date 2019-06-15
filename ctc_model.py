@@ -153,11 +153,11 @@ def ctc_crnn_custom(params):
            
     x1 = tf.keras.layers.BatchNormalization()(x)
     x1 = tf.keras.layers.LeakyReLU()(x1)
-    x1 = tf.keras.layers.SeparableConv2D(64, (3, 3), strides = 2, padding="same", use_bias = False)(x1)
+    x1 = tf.keras.layers.SeparableConv2D(64, (3, 3), strides = 2, padding="valid", use_bias = False)(x1)
     x1 = tf.keras.layers.BatchNormalization()(x1)
     x1 = tf.keras.layers.LeakyReLU()(x1)
     x1 = tf.keras.layers.SeparableConv2D(64, (3, 3), padding="same", use_bias = False)(x1)
-    x2 = tf.keras.layers.SeparableConv2D(64, (1, 1), strides = 2, padding="same")(x)
+    x2 = tf.keras.layers.SeparableConv2D(64, (1, 1), strides = 2, padding="valid")(x)
     x2 = tf.keras.layers.LeakyReLU()(x2)    
     x = tf.keras.layers.Add()([x1, x2])
     width_reduction = width_reduction * 2
@@ -174,11 +174,11 @@ def ctc_crnn_custom(params):
    
     x1 = tf.keras.layers.BatchNormalization()(x)
     x1 = tf.keras.layers.LeakyReLU()(x1)
-    x1 = tf.keras.layers.SeparableConv2D(128, (3, 3), strides = 2, padding="same", use_bias = False)(x1)
+    x1 = tf.keras.layers.SeparableConv2D(128, (3, 3), strides = 2, padding="valid", use_bias = False)(x1)
     x1 = tf.keras.layers.BatchNormalization()(x1)
     x1 = tf.keras.layers.LeakyReLU()(x1)
     x1 = tf.keras.layers.SeparableConv2D(128, (3, 3), padding="same", use_bias = False)(x1)
-    x2 = tf.keras.layers.SeparableConv2D(128, (1, 1), strides = 2, padding="same")(x)
+    x2 = tf.keras.layers.SeparableConv2D(128, (1, 1), strides = 2, padding="valid")(x)
     x2 = tf.keras.layers.LeakyReLU()(x2)
     x = tf.keras.layers.Add()([x1, x2])
     width_reduction = width_reduction * 2
@@ -195,11 +195,11 @@ def ctc_crnn_custom(params):
     
     x1 = tf.keras.layers.BatchNormalization()(x)
     x1 = tf.keras.layers.LeakyReLU()(x1)
-    x1 = tf.keras.layers.SeparableConv2D(256, (3, 3), strides = 2, padding="same", use_bias = False)(x1)
+    x1 = tf.keras.layers.SeparableConv2D(256, (3, 3), strides = 2, padding="valid", use_bias = False)(x1)
     x1 = tf.keras.layers.BatchNormalization()(x1)
     x1 = tf.keras.layers.LeakyReLU()(x1)
     x1 = tf.keras.layers.SeparableConv2D(256, (3, 3), padding="same", use_bias = False)(x1)
-    x2 = tf.keras.layers.SeparableConv2D(256, (1, 1), strides = 2,  padding="same")(x)
+    x2 = tf.keras.layers.SeparableConv2D(256, (1, 1), strides = 2,  padding="valid")(x)
     x2 = tf.keras.layers.LeakyReLU()(x2)
     x = tf.keras.layers.Add()([x1, x2])
     width_reduction = width_reduction * 2
@@ -214,7 +214,7 @@ def ctc_crnn_custom(params):
         x1 = tf.keras.layers.SeparableConv2D(256, (3, 3), padding="same", use_bias = False)(x1)
         x = tf.keras.layers.Add()([x, x1])               
     
-    x = tf.keras.layers.SeparableConv2D(256, (1, 1), strides = 2,  padding="same")(x)
+    x = tf.keras.layers.SeparableConv2D(256, (1, 1), strides = 2,  padding="valid")(x)
     x = tf.keras.layers.LeakyReLU()(x)
     width_reduction = width_reduction * 2
     height_reduction = height_reduction * 2
