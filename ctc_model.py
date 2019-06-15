@@ -26,7 +26,7 @@ def default_model_params(img_height, vocabulary_size):
     params['conv_filter_n'] = [32, 64, 128, 256]
     params['conv_filter_size'] = [ [3,3], [3,3], [3,3], [3,3] ]
     params['conv_pooling_size'] = [ [2,2], [2,2], [2,2], [2,2] ]
-    params['rnn_units'] = 512
+    params['rnn_units'] = 256
     params['rnn_layers'] = 2
     params['vocabulary_size'] = vocabulary_size
     return params
