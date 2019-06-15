@@ -47,20 +47,30 @@ class CTC_PriMuS:
         
         print ('Training with ' + str(len(self.training_list)) + ' and validating with ' + str(len(self.validation_list)))
 
-    def nextBatch(self, params):
+    def getTrainSize(self, params):
+        return len(self.training_list)
+    def getValidationSize(self, params):
+        return len(self.validation_list)
+    
+    def nextBatch(self, params, mode = 'Train'):
         images = []
         labels = []
 
         # Read files
         for _ in range(params['batch_size']):
-            sample_filepath = self.training_list[self.current_idx]
-            sample_fullpath = self.corpus_dirpath + '/' + sample_filepath + '/' + sample_filepath
-
+            if mode == 'Train':
+                sample_filepath = self.training_list[self.current_idx]
+                sample_fullpath = self.corpus_dirpath + '/' + sample_filepath + '/' + sample_filepath
+            elif mode == 'Validation':
+                sample_filepath = self.validation_list[self.current_val_idx]
+                sample_fullpath = self.corpus_dirpath + '/' + sample_filepath + '/' + sample_filepath
+               
             # IMAGE
             if self.distortions:
                 sample_img = cv2.imread(sample_fullpath + '_distorted.jpg', False) # Grayscale is assumed
             else:
                 sample_img = cv2.imread(sample_fullpath + '.png', False)  # Grayscale is assumed!
+                
             height = params['img_height']
             sample_img = ctc_utils.resize(sample_img,height)
             images.append(ctc_utils.normalize(sample_img))
@@ -77,8 +87,10 @@ class CTC_PriMuS:
 
             labels.append([self.word2int[lab] for lab in sample_gt_plain])
 
-            self.current_idx = (self.current_idx + 1) % len( self.training_list )
-
+            if mode == 'Train':
+                self.current_idx = (self.current_idx + 1) % len( self.training_list )
+            elif mode == 'Validation':
+                self.current_val_idx = (self.current_val_idx + 1) % len( self.validation_list )
 
         # Transform to batch
         image_widths = [img.shape[1] for img in images]
@@ -105,7 +117,7 @@ class CTC_PriMuS:
             'targets': labels,
         }
         
-    def getValidation(self, params):
+    def _getValidation(self, params):
         if self.validation_dict == None:                
             images = []
             labels = []
