@@ -55,7 +55,7 @@ for epoch in range(max_epochs):
         print ('Validating...')
         print("Checking for Memory Error 1...")
 
-        validation_batch, validation_size = primus.getValidation(params)
+        validation_batch, validation_size = primus.getValidation(params) #One Batch Only
         print("Checking for Memory Error 2...")
         
         val_idx = 0
@@ -64,28 +64,28 @@ for epoch in range(max_epochs):
         val_len = 0
         val_count = 0
             
-        while val_idx < validation_size:
-            mini_batch_feed_dict = {
-                inputs: validation_batch['inputs'][val_idx:val_idx+params['batch_size']],
-                seq_len: validation_batch['seq_lengths'][val_idx:val_idx+params['batch_size']],
-                rnn_keep_prob: 1.0            
-            }            
+        
+        mini_batch_feed_dict = {
+            inputs: validation_batch['inputs'][val_idx:val_idx+params['batch_size']],
+            seq_len: validation_batch['seq_lengths'][val_idx:val_idx+params['batch_size']],
+            rnn_keep_prob: 1.0            
+        }            
                         
             
-            prediction = sess.run(decoded,
-                                  mini_batch_feed_dict)
-    
-            str_predictions = ctc_utils.sparse_tensor_to_strs(prediction)
-            print("Checking for Memory Error 3...")
-    
+        prediction = sess.run(decoded,
+                              mini_batch_feed_dict)
 
-            for i in range(len(str_predictions)):
-                ed = ctc_utils.edit_distance(str_predictions[i], validation_batch['targets'][val_idx+i])
-                val_ed = val_ed + ed
-                val_len = val_len + len(validation_batch['targets'][val_idx+i])
-                val_count = val_count + 1
-                
-            val_idx = val_idx + params['batch_size']
+        str_predictions = ctc_utils.sparse_tensor_to_strs(prediction)
+        print("Checking for Memory Error 3...")
+
+
+        for i in range(len(str_predictions)):
+            ed = ctc_utils.edit_distance(str_predictions[i], validation_batch['targets'][val_idx+i])
+            val_ed = val_ed + ed
+            val_len = val_len + len(validation_batch['targets'][val_idx+i])
+            val_count = val_count + 1
+
+        val_idx = val_idx + params['batch_size']
     
         print ('[Epoch ' + str(epoch) + '] ' + str(1. * val_ed / val_count) + ' (' + str(100. * val_ed / val_len) + ' SER) from ' + str(val_count) + ' samples.')        
         print ('Saving the model...')
