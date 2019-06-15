@@ -221,7 +221,7 @@ def ctc_crnn_custom(params):
 
     # Prepare output of conv block for recurrent blocks
     #features = tf.transpose(x, perm=[0, 2, 1, 3])  # -> [width, batch, height, channels] (time_major=True)
-    #features = x
+    features = x
     feature_dim = params['conv_filter_n'][-1] * (params['img_height'] / height_reduction)
     feature_width = input_shape[2] / width_reduction
     
