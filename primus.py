@@ -20,6 +20,7 @@ class CTC_PriMuS:
         corpus_file.close()
 
         self.current_idx = 0
+        self.current_val_idx = 0
 
         # Dictionary
         self.word2int = {}
@@ -113,8 +114,8 @@ class CTC_PriMuS:
             print(len(self.validation_list))
             count = 0
             
-            for idx in range(params['batch_size']):
-                sample_filepath = self.validation_list[idx]          
+            for _ in range(params['batch_size']):
+                sample_filepath = self.validation_list[self.current_val_idx]          
                 sample_fullpath = self.corpus_dirpath + '/' + sample_filepath + '/' + sample_filepath
     
                 # IMAGE
@@ -137,6 +138,7 @@ class CTC_PriMuS:
                 sample_gt_file.close()
     
                 labels.append([self.word2int[lab] for lab in sample_gt_plain])
+                self.current_val_idx = (self.current_val_idx + 1) % len( self.validation_list )
     
             # Transform to batch
             image_widths = [img.shape[1] for img in images]
