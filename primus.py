@@ -113,7 +113,8 @@ class CTC_PriMuS:
             print(len(self.validation_list))
             count = 0
             
-            for sample_filepath in self.validation_list:
+            for idx in range(params['batch_size']):
+                sample_filepath = self.validation_list[idx]          
                 sample_fullpath = self.corpus_dirpath + '/' + sample_filepath + '/' + sample_filepath
     
                 # IMAGE
