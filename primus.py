@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Jun 16 00:23:40 2019
+
+@author: amade
+"""
+
 import cv2
 import numpy as np
 import ctc_utils
@@ -49,6 +56,7 @@ class CTC_PriMuS:
 
     def getTrainSize(self, params):
         return len(self.training_list)
+    
     def getValidationSize(self, params):
         return len(self.validation_list)
     
