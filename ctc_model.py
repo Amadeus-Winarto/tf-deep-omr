@@ -150,14 +150,13 @@ def ctc_crnn_custom(params):
         x1 = tf.keras.layers.LeakyReLU()(x1)
         x1 = tf.keras.layers.SeparableConv2D(32, (3, 3), padding="same", use_bias = False)(x1)
         x = tf.keras.layers.Add()([x, x1])        
-           
+    
     x1 = tf.keras.layers.BatchNormalization()(x)
     x1 = tf.keras.layers.LeakyReLU()(x1)
     x1 = tf.keras.layers.SeparableConv2D(64, (3, 3), strides = 2, padding="valid", use_bias = False)(x1)
     x1 = tf.keras.layers.BatchNormalization()(x1)
     x1 = tf.keras.layers.LeakyReLU()(x1)
     x1 = tf.keras.layers.SeparableConv2D(64, (3, 3), padding="same", use_bias = False)(x1)
-    x2 = tf.keras.layers.SeparableConv2D(64, (1, 1), strides = 2, padding="valid")(x)
     x2 = tf.keras.layers.LeakyReLU()(x2)    
     x = tf.keras.layers.Add()([x1, x2])
     width_reduction = width_reduction * 2
@@ -363,10 +362,14 @@ def ctc_ctcn_custom(params):
     height_reduction = height_reduction * 2
 
     # Prepare output of conv block for recurrent blocks
-    features = tf.transpose(x, perm=[0, 2, 1, 3])  # -> [width, batch, height, channels] (time_major=True)
+    #features = tf.transpose(x, perm=[0, 2, 1, 3])  # -> [width, batch, height, channels] (time_major=True)
     #features = x
     feature_dim = params['conv_filter_n'][-1] * (params['img_height'] / height_reduction) #2048
     feature_width = input_shape[2] / width_reduction
+    
+    x = tf.keras.layers.Flatten()(x)
+    x = tf.keras.layers.Dropout(rate = 0.5)(x)
+    features = tf.keras.layers.Dense(input_shape[0] * tf.cast(feature_width,'int32') * tf.cast(feature_dim,'int32'))(x)
     features = tf.reshape(features, tf.stack([input_shape[0], tf.cast(feature_width,'int32'), tf.cast(feature_dim,'int32')])) # -> [batch, width, features]
 
     tf.constant(params['img_height'],name='input_height')
