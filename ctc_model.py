@@ -131,7 +131,6 @@ def ctc_crnn_custom(params):
     width_reduction = 1
     height_reduction = 1
 
-
     # Convolutional blocks
     x = input
     x1 = tf.keras.layers.SeparableConv2D(32, (3, 3), padding="same")(x)
@@ -151,20 +150,18 @@ def ctc_crnn_custom(params):
         x1 = tf.keras.layers.LeakyReLU()(x1)
         x1 = tf.keras.layers.SeparableConv2D(32, (3, 3), padding="same", use_bias = False)(x1)
         x = tf.keras.layers.Add()([x, x1])        
-    
-    width_reduction = width_reduction * 2
-    height_reduction = height_reduction * 2
-        
+           
     x1 = tf.keras.layers.BatchNormalization()(x)
     x1 = tf.keras.layers.LeakyReLU()(x1)
     x1 = tf.keras.layers.SeparableConv2D(64, (3, 3), strides = 2, padding="same", use_bias = False)(x1)
     x1 = tf.keras.layers.BatchNormalization()(x1)
     x1 = tf.keras.layers.LeakyReLU()(x1)
     x1 = tf.keras.layers.SeparableConv2D(64, (3, 3), padding="same", use_bias = False)(x1)
-    x2 = tf.keras.layers.SeparableConv2D(64, strides = 2, (1, 1), padding="same")(x)
-    x2 = tf.keras.layers.LeakyReLU()(x2)
-    
+    x2 = tf.keras.layers.SeparableConv2D(64, (1, 1), strides = 2, padding="same")(x)
+    x2 = tf.keras.layers.LeakyReLU()(x2)    
     x = tf.keras.layers.Add()([x1, x2])
+    width_reduction = width_reduction * 2
+    height_reduction = height_reduction * 2
 
     for i in range(2):
         x1 = tf.keras.layers.BatchNormalization()(x)
@@ -174,20 +171,18 @@ def ctc_crnn_custom(params):
         x1 = tf.keras.layers.LeakyReLU()(x1)
         x1 = tf.keras.layers.SeparableConv2D(64, (3, 3), padding="same", use_bias = False)(x1)
         x = tf.keras.layers.Add()([x, x1])               
-
-    width_reduction = width_reduction * 2
-    height_reduction = height_reduction * 2
-    
+   
     x1 = tf.keras.layers.BatchNormalization()(x)
     x1 = tf.keras.layers.LeakyReLU()(x1)
     x1 = tf.keras.layers.SeparableConv2D(128, (3, 3), strides = 2, padding="same", use_bias = False)(x1)
     x1 = tf.keras.layers.BatchNormalization()(x1)
     x1 = tf.keras.layers.LeakyReLU()(x1)
     x1 = tf.keras.layers.SeparableConv2D(128, (3, 3), padding="same", use_bias = False)(x1)
-    x2 = tf.keras.layers.SeparableConv2D(128, strides = 2, (1, 1), padding="same")(x)
+    x2 = tf.keras.layers.SeparableConv2D(128, (1, 1), strides = 2, padding="same")(x)
     x2 = tf.keras.layers.LeakyReLU()(x2)
-    
     x = tf.keras.layers.Add()([x1, x2])
+    width_reduction = width_reduction * 2
+    height_reduction = height_reduction * 2
 
     for i in range(2):
         x1 = tf.keras.layers.BatchNormalization()(x)
@@ -197,9 +192,6 @@ def ctc_crnn_custom(params):
         x1 = tf.keras.layers.LeakyReLU()(x1)
         x1 = tf.keras.layers.SeparableConv2D(128, (3, 3), padding="same", use_bias = False)(x1)
         x = tf.keras.layers.Add()([x, x1])               
-
-    width_reduction = width_reduction * 2
-    height_reduction = height_reduction * 2
     
     x1 = tf.keras.layers.BatchNormalization()(x)
     x1 = tf.keras.layers.LeakyReLU()(x1)
@@ -207,10 +199,11 @@ def ctc_crnn_custom(params):
     x1 = tf.keras.layers.BatchNormalization()(x1)
     x1 = tf.keras.layers.LeakyReLU()(x1)
     x1 = tf.keras.layers.SeparableConv2D(256, (3, 3), padding="same", use_bias = False)(x1)
-    x2 = tf.keras.layers.SeparableConv2D(256, strides = 2, (1, 1), padding="same")(x)
+    x2 = tf.keras.layers.SeparableConv2D(256, (1, 1), strides = 2,  adding="same")(x)
     x2 = tf.keras.layers.LeakyReLU()(x2)
-    
     x = tf.keras.layers.Add()([x1, x2])
+    width_reduction = width_reduction * 2
+    height_reduction = height_reduction * 2
 
     for i in range(2):
         x1 = tf.keras.layers.BatchNormalization()(x)
@@ -220,9 +213,6 @@ def ctc_crnn_custom(params):
         x1 = tf.keras.layers.LeakyReLU()(x1)
         x1 = tf.keras.layers.SeparableConv2D(256, (3, 3), padding="same", use_bias = False)(x1)
         x = tf.keras.layers.Add()([x, x1])               
-
-    width_reduction = width_reduction * 2
-    height_reduction = height_reduction * 2
 
     # Prepare output of conv block for recurrent blocks
     features = tf.transpose(x, perm=[2, 0, 3, 1])  # -> [width, batch, height, channels] (time_major=True)
@@ -236,13 +226,18 @@ def ctc_crnn_custom(params):
     # Recurrent block
     rnn_keep_prob = tf.placeholder(dtype=tf.float32, name="keep_prob")
     rnn_hidden_units = params['rnn_units']
-    rnn_hidden_layers = params['rnn_layers']
+    #rnn_hidden_layers = params['rnn_layers']
     
     x1 = tf.keras.layers.GRU(rnn_hidden_units, return_sequences = True, activation = 'relu',
                              kernel_initializer = 'he_normal', dropout = 1 - rnn_keep_prob)(features)
     x2 = tf.keras.layers.GRU(rnn_hidden_units, return_sequences = True, go_backwards = True, 
                              activation = 'relu', kernel_initializer = 'he_normal', dropout = 1 - rnn_keep_prob)(features)
+    x = tf.keras.layers.Add()([x1, x2])
     
+    x1 = tf.keras.layers.GRU(rnn_hidden_units, return_sequences = True, activation = 'relu',
+                             kernel_initializer = 'he_normal', dropout = 1 - rnn_keep_prob)(x)
+    x2 = tf.keras.layers.GRU(rnn_hidden_units, return_sequences = True, go_backwards = True, 
+                             activation = 'relu', kernel_initializer = 'he_normal', dropout = 1 - rnn_keep_prob)(x)
 
     rnn_outputs = tf.keras.layers.Concatenate()([x1, x2])
     logits = tf.keras.layers.Dense(params['vocabulary_size'] + 1)(rnn_outputs)    
