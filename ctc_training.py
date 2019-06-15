@@ -21,7 +21,7 @@ args = parser.parse_args()
 
 # Load primus
 
-primus = CTC_PriMuS(args.corpus,args.set,args.voc, args.semantic, val_split = 0.05)
+primus = CTC_PriMuS(args.corpus,args.set,args.voc, args.semantic, distortions = True, val_split = 0.1)
 
 # Parameterization
 img_height = 128
@@ -37,6 +37,7 @@ train_opt = tf.train.AdamOptimizer().minimize(loss)
 saver = tf.train.Saver(max_to_keep=None)
 sess.run(tf.global_variables_initializer())
 
+step_size = 
 # Training loop
 for epoch in range(max_epochs):
     batch = primus.nextBatch(params)
