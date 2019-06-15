@@ -87,7 +87,9 @@ for epoch in range(max_epochs):
 
         val_idx = val_idx + params['batch_size']
     
-        print ('[Epoch ' + str(epoch) + '] ' + str(1. * val_ed / val_count) + ' (' + str(100. * val_ed / val_len) + ' SER) from ' + str(val_count) + ' samples.')        
+        print ('[Epoch ' + str(epoch) + '])
+        print('Edit Distance: " + str(1. * val_ed / val_count)
+        print(str(100. * val_ed / val_len) + ' SER from ' + str(val_count) + ' samples.')        
         print ('Saving the model...')
         saver.save(sess,args.save_model,global_step=epoch)
         print ('------------------------------')
