@@ -39,7 +39,7 @@ max_epochs = 100
 dropout = 0.5
 
 # Model
-inputs, seq_len, targets, decoded, loss, rnn_keep_prob = ctc_model.ctc_crnn_custom(params)
+inputs, seq_len, targets, decoded, loss, rnn_keep_prob = ctc_model.ctc_crnn_custom_vgg(params)
 train_opt = tf.train.AdamOptimizer().minimize(loss)
 
 saver = tf.train.Saver(max_to_keep=None)
