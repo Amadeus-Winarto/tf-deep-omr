@@ -225,9 +225,9 @@ def ctc_crnn_custom(params):
     feature_dim = params['conv_filter_n'][-1] * (params['img_height'] / height_reduction)
     feature_width = input_shape[2] / width_reduction
     
-    x = tf.keras.layers.Flatten()(x)
-    x = tf.keras.layers.Dropout(rate = 0.5)(x)
-    features = tf.keras.layers.Dense(input_shape[0] * tf.cast(feature_width,'int32') * tf.cast(feature_dim,'int32'))(x)
+    #x = tf.keras.layers.Flatten()(x)
+    #x = tf.keras.layers.Dropout(rate = 0.5)(x)
+    #features = tf.keras.layers.Dense(input_shape[0] * tf.cast(feature_width,'int32') * tf.cast(feature_dim,'int32'))(x)
     features = tf.reshape(features, tf.stack([input_shape[0], tf.cast(feature_width,'int32'), tf.cast(feature_dim,'int32')])) # -> [batch, width, features]
 
     tf.constant(params['img_height'],name='input_height')
