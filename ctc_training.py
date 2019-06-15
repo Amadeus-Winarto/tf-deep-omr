@@ -53,8 +53,10 @@ for epoch in range(max_epochs):
         # VALIDATION
         print ('Loss value at epoch ' + str(epoch) + ':' + str(loss_value))
         print ('Validating...')
+        print('Checking for Memory Error 1...")
 
         validation_batch, validation_size = primus.getValidation(params)
+        print('Checking for Memory Error 2...")
         
         val_idx = 0
         
@@ -74,6 +76,7 @@ for epoch in range(max_epochs):
                                   mini_batch_feed_dict)
     
             str_predictions = ctc_utils.sparse_tensor_to_strs(prediction)
+            print('Checking for Memory Error 3...")
     
 
             for i in range(len(str_predictions)):
