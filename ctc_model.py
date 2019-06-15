@@ -225,20 +225,20 @@ def ctc_crnn_custom(params):
     tf.constant(width_reduction,name='width_reduction')
 
     # Recurrent block
-    rnn_keep_prob = tf.placeholder(dtype=tf.float32, name="keep_prob")
+    rnn_keep_prob = tf.keras.backend.placeholder(dtype=tf.float32, name="keep_prob")
     rnn_hidden_units = params['rnn_units']
     #rnn_hidden_layers = params['rnn_layers']
     
     x1 = tf.keras.layers.GRU(rnn_hidden_units, return_sequences = True, activation = 'relu',
-                             kernel_initializer = 'he_normal', dropout = rnn_keep_prob)(features)
+                             kernel_initializer = 'he_normal', dropout = 0.5)(features)
     x2 = tf.keras.layers.GRU(rnn_hidden_units, return_sequences = True, go_backwards = True, 
-                             activation = 'relu', kernel_initializer = 'he_normal', dropout = rnn_keep_prob)(features)
+                             activation = 'relu', kernel_initializer = 'he_normal', dropout = 0.5)(features)
     x = tf.keras.layers.Add()([x1, x2])
     
     x1 = tf.keras.layers.GRU(rnn_hidden_units, return_sequences = True, activation = 'relu',
-                             kernel_initializer = 'he_normal', dropout = rnn_keep_prob)(x)
+                             kernel_initializer = 'he_normal', dropout = 0.5)(x)
     x2 = tf.keras.layers.GRU(rnn_hidden_units, return_sequences = True, go_backwards = True, 
-                             activation = 'relu', kernel_initializer = 'he_normal', dropout = rnn_keep_prob)(x)
+                             activation = 'relu', kernel_initializer = 'he_normal', dropout = 0.5)(x)
 
     rnn_outputs = tf.keras.layers.Concatenate()([x1, x2])
     logits = tf.keras.layers.Dense(params['vocabulary_size'] + 1)(rnn_outputs)    
