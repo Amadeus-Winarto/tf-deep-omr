@@ -21,7 +21,7 @@ args = parser.parse_args()
 
 # Load primus
 
-primus = CTC_PriMuS(args.corpus,args.set,args.voc, args.semantic, val_split = 0.1)
+primus = CTC_PriMuS(args.corpus,args.set,args.voc, args.semantic, val_split = 0.05)
 
 # Parameterization
 img_height = 128
