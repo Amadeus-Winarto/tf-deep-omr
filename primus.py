@@ -54,10 +54,10 @@ class CTC_PriMuS:
         
         print ('Training with ' + str(len(self.training_list)) + ' and validating with ' + str(len(self.validation_list)))
 
-    def getTrainSize(self, params):
+    def getTrainSize(self):
         return len(self.training_list)
     
-    def getValidationSize(self, params):
+    def getValidationSize(self):
         return len(self.validation_list)
     
     def nextBatch(self, params, mode = 'Train'):
