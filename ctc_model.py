@@ -230,15 +230,15 @@ def ctc_crnn_custom(params):
     #rnn_hidden_layers = params['rnn_layers']
     
     x1 = tf.keras.layers.GRU(rnn_hidden_units, return_sequences = True, activation = 'relu',
-                             kernel_initializer = 'he_normal', dropout = 1 - rnn_keep_prob)(features)
+                             kernel_initializer = 'he_normal', dropout = rnn_keep_prob)(features)
     x2 = tf.keras.layers.GRU(rnn_hidden_units, return_sequences = True, go_backwards = True, 
-                             activation = 'relu', kernel_initializer = 'he_normal', dropout = 1 - rnn_keep_prob)(features)
+                             activation = 'relu', kernel_initializer = 'he_normal', dropout = rnn_keep_prob)(features)
     x = tf.keras.layers.Add()([x1, x2])
     
     x1 = tf.keras.layers.GRU(rnn_hidden_units, return_sequences = True, activation = 'relu',
-                             kernel_initializer = 'he_normal', dropout = 1 - rnn_keep_prob)(x)
+                             kernel_initializer = 'he_normal', dropout = rnn_keep_prob)(x)
     x2 = tf.keras.layers.GRU(rnn_hidden_units, return_sequences = True, go_backwards = True, 
-                             activation = 'relu', kernel_initializer = 'he_normal', dropout = 1 - rnn_keep_prob)(x)
+                             activation = 'relu', kernel_initializer = 'he_normal', dropout = rnn_keep_prob)(x)
 
     rnn_outputs = tf.keras.layers.Concatenate()([x1, x2])
     logits = tf.keras.layers.Dense(params['vocabulary_size'] + 1)(rnn_outputs)    
