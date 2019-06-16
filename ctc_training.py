@@ -41,7 +41,7 @@ dropout = 0.5
 print("Parameterization Completed")
 
 # Model
-inputs, seq_len, targets, decoded, loss, rnn_keep_prob = ctc_model.ctc_crnn_custom_vgg(params)
+inputs, seq_len, targets, decoded, loss, rnn_keep_prob = ctc_model.ctc_ctcn_custom_vgg(params)
 train_opt = tf.train.AdamOptimizer().minimize(loss)
 print("Model Built")
 
