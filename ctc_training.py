@@ -34,7 +34,7 @@ primus = CTC_PriMuS(args.corpus,args.set,args.voc, args.semantic, distortions = 
 print("Dataset Loaded")
 
 # Parameterization
-img_height = 128
+img_height = 64
 params = ctc_model.default_model_params(img_height, primus.vocabulary_size)
 max_epochs = 100
 dropout = 0.5
