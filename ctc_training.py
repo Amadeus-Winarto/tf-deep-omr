@@ -53,9 +53,9 @@ step_size = primus.getTrainSize() // params['batch_size']
 # Training loop
 print("Starting Training")
 print()
-for epoch in trange(max_epochs):
+for epoch in range(max_epochs):
     loss = []
-    for step in range(step_size):
+    for step in trange(step_size):
         batch = primus.nextBatch(params, mode = 'Train')
 
         _, loss_value = sess.run([train_opt, loss],
