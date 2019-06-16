@@ -311,7 +311,7 @@ def ctc_ctcn_custom_vgg(params):
     rnn_hidden_units = params['rnn_units']
     #rnn_hidden_layers = params['rnn_layers']
     
-    x = tf.keras.layers.Conv1D(rnn_hidden_units, 1, padding='causal')(x)
+    x = tf.keras.layers.Conv1D(rnn_hidden_units, 1, padding='causal')(features)
     
     for s in range(1):#number of stacks
         for d in [1, 2, 4, 8, 16, 32]: #dilation rate
