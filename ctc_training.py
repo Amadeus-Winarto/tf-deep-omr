@@ -31,16 +31,19 @@ args = parser.parse_args()
 # Load primus dataset
 
 primus = CTC_PriMuS(args.corpus,args.set,args.voc, args.semantic, distortions = True, val_split = 0.1)
+print("Dataset Loaded")
 
 # Parameterization
 img_height = 128
 params = ctc_model.default_model_params(img_height, primus.vocabulary_size)
 max_epochs = 100
 dropout = 0.5
+print("Parameterization Completed")
 
 # Model
 inputs, seq_len, targets, decoded, loss, rnn_keep_prob = ctc_model.ctc_crnn_custom_vgg(params)
 train_opt = tf.train.AdamOptimizer().minimize(loss)
+print("Model Built")
 
 saver = tf.train.Saver(max_to_keep=None)
 sess.run(tf.global_variables_initializer())
@@ -48,6 +51,8 @@ sess.run(tf.global_variables_initializer())
 step_size = primus.getTrainSize() // params['batch_size']
 
 # Training loop
+print("Starting Training")
+print()
 for epoch in range(max_epochs):
     loss = []
     for step in range(step_size):
