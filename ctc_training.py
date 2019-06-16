@@ -4,7 +4,7 @@ Created on Sun Jun 16 00:21:17 2019
 
 @author: amade
 """
-
+from tqdm import trange
 import tensorflow as tf
 from primus import CTC_PriMuS
 import ctc_utils
@@ -24,8 +24,8 @@ parser.add_argument('-corpus', dest='corpus', type=str, required=True, help='Pat
 parser.add_argument('-set',  dest='set', type=str, required=True, help='Path to the set file.')
 parser.add_argument('-save_model', dest='save_model', type=str, required=True, help='Path to save the model.')
 parser.add_argument('-vocabulary', dest='voc', type=str, required=True, help='Path to the vocabulary file.')
-parser.add_argument('-semantic', dest='semantic', action="store_true", default=False)
 parser.add_argument('-frequency', dest='frequency', type=int, default=1, help='Frequency of printing')
+parser.add_argument('-semantic', dest='semantic', action="store_true", default=False)
 args = parser.parse_args()
 
 # Load primus dataset
@@ -53,7 +53,7 @@ step_size = primus.getTrainSize() // params['batch_size']
 # Training loop
 print("Starting Training")
 print()
-for epoch in range(max_epochs):
+for epoch in trange(max_epochs):
     loss = []
     for step in range(step_size):
         batch = primus.nextBatch(params, mode = 'Train')
