@@ -34,7 +34,7 @@ primus = CTC_PriMuS(args.corpus,args.set,args.voc, args.semantic, distortions = 
 print("Dataset Loaded")
 
 # Parameterization
-img_height = 64
+img_height = 16
 params = ctc_model.default_model_params(img_height, primus.vocabulary_size)
 max_epochs = 100
 dropout = 0.5
@@ -48,7 +48,7 @@ print("Model Built")
 saver = tf.train.Saver(max_to_keep=None)
 sess.run(tf.global_variables_initializer())
 
-step_size = primus.getTrainSize() // params['batch_size']
+step_size = 20 #primus.getTrainSize() // params['batch_size']
 
 # Training loop
 print("Starting Training")
