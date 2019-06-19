@@ -16,7 +16,7 @@ class CTC_PriMuS:
     validation_dict = None
 
 
-    def __init__(self, corpus_dirpath, corpus_filepath, dictionary_path, semantic, distortions = False, val_split = 0.0):
+    def __init__(self, corpus_dirpath, corpus_filepath, dictionary_path, semantic, distortions = True, val_split = 0.0):
         self.semantic = semantic
         self.distortions = distortions
         self.corpus_dirpath = corpus_dirpath
